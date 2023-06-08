@@ -32,10 +32,10 @@ const PopularServices = () => {
   ];
   return (
     <div className="mx-20 my-16">
-      <h2 className="mb-5 text-4xl font-bold text-[#404145]">
+      <h2 className="mb-10 text-4xl font-bold text-[#404145] ml-20">
         Popular services
       </h2>
-      <ul className='flex flex-wrap gap-16'>
+      <ul className='flex flex-wrap gap-16 justify-center '>
         {popularServicesData.map(({name, label, image}) => (
           <li key={name} className='relative cursor-pointer' onClick={() => router.push(`/search?q=${name.toLowerCase()}`)}>
             <div className="absolute z-10 left-5 top-4 text-white">
