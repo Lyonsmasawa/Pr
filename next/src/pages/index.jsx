@@ -20,9 +20,10 @@ const index = () => {
       <Services />
       <FiverrBusiness />
       <JoinFiverr />
-      {(showLoginModal || showSignupModal) && (
+      {(showLoginModal || showSignupModal) &&(
         <AuthWrapper type={showLoginModal ? "login" : "signup"} />
-      )}
+        )}
+      <AuthWrapper type={showLoginModal ? "login" : "signup"} />
     </div>
   )
 }
