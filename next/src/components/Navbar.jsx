@@ -1,11 +1,15 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FiverrLogo from "./FiverrLogo";
 import { useStateProvider } from "@/context/StateContext";
 import { IoSearchOutline } from "./../../node_modules/react-icons/io5/index.esm";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
+import { GET_USER_INFO } from "@/utils/constants";
+import axios from 'axios'
 
 const Navbar = () => {
+  const [cookies] = useCookies()
   const router = useRouter();
   const [isLoaded, setIsLoaded] = useState(true);
   const [isFixed, setIsFixed] = useState(false);
@@ -26,6 +30,22 @@ const Navbar = () => {
     { linkName: "Sign in", handler: handleLogin, type: "button" },
     { linkName: "Join", handler: handleSignup, type: "button2" },
   ];
+
+  useEffect(() => {
+    if(cookies.jwt && !userInfo ){
+        console.log(cookies.jwt)
+        const getUserInfo = async() => {
+            try {
+                const {data: {user}} = await axios.post(GET_USER_INFO, {}, {withCredentials: true, })
+                let projectedUserInfo = {...user};
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getUserInfo()
+    }
+  }, [cookies, userInfo])
+  
 
   return (
     <>
