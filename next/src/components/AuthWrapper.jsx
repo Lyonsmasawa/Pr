@@ -3,14 +3,39 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { MdFacebook } from "react-icons/md";
 import { reducerCases } from "@/context/constants";
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
+import axios from "axios";
+import { useCookies } from 'react-cookie';
 
 const AuthWrapper = ({ type }) => {
+  const [cookies, setCookies] = useCookies()
   const [{ showLoginModal, showSignupModal }, dispatch] = useStateProvider();
   const [values, setValues] = useState({ email: "", password: "" });
-
+  
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  const handleClick = async () => {
+    try {
+      const {email, password} = values
+      if (email && password) {
+        let dataLoad = {
+          email,
+          password
+        }
+        const { data: {user, jwt} } = await axios.post(type === 'signup' ? SIGNUP_ROUTE : LOGIN_ROUTE, dataLoad, {withCredentials: true})
+        setCookies("jwt", {jwt})
+        dispatch({type: reducerCases.CLOSE_AUTH_MODAL})
+       if (user) {
+         dispatch({type: reducerCases.SET_USER, userInfo: user})
+         window.location.reload()
+       }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="fixed top-0 z-[100]">
@@ -49,6 +74,7 @@ const AuthWrapper = ({ type }) => {
                   placeholder="Email"
                   className="border border-slate-300  p-3 w-80"
                   value={values.email}
+                  onChange={handleChange} 
                 />
                 <input
                   type="password"
@@ -58,7 +84,7 @@ const AuthWrapper = ({ type }) => {
                   value={values.password}
                   onChange={handleChange}
                 />
-                <button className="bg-[#1dbf73] text-white px-12 text-lg font-semibold rounded-r-md  p-3 w-80">
+                <button className="bg-[#1dbf73] text-white px-12 text-lg font-semibold rounded-r-md  p-3 w-80" onClick={handleClick}>
                   Continue
                 </button>
               </div>
