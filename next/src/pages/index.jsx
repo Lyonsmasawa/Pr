@@ -23,7 +23,6 @@ const index = () => {
       {(showLoginModal || showSignupModal) &&(
         <AuthWrapper type={showLoginModal ? "login" : "signup"} />
         )}
-      <AuthWrapper type={showLoginModal ? "login" : "signup"} />
     </div>
   )
 }
