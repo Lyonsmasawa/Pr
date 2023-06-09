@@ -4,6 +4,7 @@ export const initialState = {
     showLoginModal: false,
     showSignupModal: false,
     userInfo: undefined,
+    isSeller: false,
 }
 
 const reducer = (state, action) => {
@@ -28,6 +29,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 userInfo: action.userInfo,
+            }
+        case reducerCases.SWITCH_MODE:
+            return {
+                ...state,
+                isSeller: !state.isSeller
             }
         default:
             return state;
