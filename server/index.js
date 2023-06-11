@@ -24,6 +24,7 @@ app.use(cors({
     credentials: true,
 }))
 
+app.use("uploads/profiles", express.static)
 app.use(cookieParser())
 app.use(express.json())
 
