@@ -1,13 +1,13 @@
-import express from "express"
-import dotenv from "dotenv"
-import cors from "cors"
-import authRoutes from "./routes/AuthRoutes.js"
-import cookieParser from "cookie-parser"
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import authRoutes from "./routes/AuthRoutes.js";
+import cookieParser from "cookie-parser";
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
-const port = process.env.PORT
+const app = express();
+const port = process.env.PORT;
 
 // Enable CORS
 app.use((req, res, next) => {
@@ -18,18 +18,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors({
-    origin: ["process.env.PUBLIC_URL"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
-}))
+// app.use("/uploads", express.static("uploads"));
+app.use("/uploads/profiles", express.static("uploads/profiles"));
+app.use(cookieParser());
+app.use(express.json());
 
-app.use("uploads/profiles", express.static)
-app.use(cookieParser())
-app.use(express.json())
-
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
 
 app.listen(port, () => {
-    console.log(`server is running at http://localhost:${port}`)
-})
+  console.log(`server is running at http://localhost:${port}`);
+});

@@ -8,6 +8,7 @@ import { useCookies } from "react-cookie";
 import { GET_USER_INFO, HOST } from "@/utils/constants";
 import axios from "axios";
 import { reducerCases } from "@/context/constants";
+import Image from "next/image";
 
 const Navbar = () => {
   const [cookies] = useCookies();
@@ -93,10 +94,10 @@ const Navbar = () => {
           } = await axios.post(GET_USER_INFO, {}, { withCredentials: true });
           let projectedUserInfo = { ...user };
           console.log(projectedUserInfo);
-          if (user.image) {
+          if (user.profileImage) {
             projectedUserInfo = {
               ...projectedUserInfo,
-              imageName: HOST + "/" + user.image,
+              imageName: HOST + "/" + user.profileImage,
             };
           }
           delete projectedUserInfo.image;

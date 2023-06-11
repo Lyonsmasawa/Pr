@@ -1,9 +1,11 @@
 import { useStateProvider } from "@/context/StateContext";
-import { SET_USER_INFO } from "@/utils/constants";
+import { reducerCases } from "@/context/constants";
+import { SET_USER_INFO, SET_USER_IMAGE, HOST } from "@/utils/constants";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 
 const Profile = () => {
   const router = useRouter();
@@ -18,6 +20,29 @@ const Profile = () => {
     description: "",
   });
 
+  useEffect(() => {
+    const handleData = { ...data };
+    if (userInfo) {
+      if (userInfo?.username) handleData.userName = userInfo?.username;
+      if (userInfo?.description) handleData.description = userInfo?.description;
+      if (userInfo?.fullName) handleData.fullName = userInfo?.fullName;
+      console.log({ userInfo });
+    }
+
+    if (userInfo?.imageName) {
+      const fileName = image;
+      fetch(userInfo.imageName).then(async (response) => {
+        const contentType = response.headers.get("content-type");
+        const blob = await response.blob();
+        const files = new File([blob], fileName, { contentType });
+        setImage(files);
+      });
+    }
+
+    setData(handleData);
+    setIsLoaded(true);
+  }, [userInfo]);
+
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -31,18 +56,45 @@ const Profile = () => {
     }
   };
 
-  const setProfile = async () => { 
+  const setProfile = async () => {
     try {
-      const response = await axios.post(SET_USER_INFO, {...data}, {withCredentials: true})
-      if(response.data.userNameError){
-        setErrorMessage("Username is already taken")
+      const response = await axios.post(
+        SET_USER_INFO,
+        { ...data },
+        { withCredentials: true }
+      );
+      if (response.data.userNameError) {
+        setErrorMessage("Username is already taken");
       } else {
-        setErrorMessage("")
+        setErrorMessage("");
+        let imageName = "";
+        if (image) {
+          const formData = new FormData();
+          formData.append("images", image);
+          const {
+            data: { img },
+          } = await axios.post(SET_USER_IMAGE, formData, {
+            withCredentials: true,
+            header: {
+              "Content-type": "multipart/form-data",
+            },
+          });
+          imageName = img;
+        }
+
+        dispatch({
+          type: reducerCases.SET_USER,
+          userInfo: {
+            ...userInfo,
+            ...data,
+            image: imageName.length ? HOST + "/" + imageName : false,
+          },
+        });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const inputClassName =
     "block p-4 w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50  focus:ring-blue-500 focus:border-blue-500";
