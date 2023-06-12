@@ -1,8 +1,10 @@
 import { categories } from "@/utils/categories";
+import { ADD_GIG_ROUTE } from "@/utils/constants";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import ImageUpload from "../../../components/ImageUpload";
+import axios from 'axios'
 
 const create = () => {
   const [cookies] = useCookies();
@@ -41,8 +43,43 @@ const create = () => {
     setFeatures(clonedFeatures);
   };
 
-  const addGig = () => {
-
+  const addGig = async () => {
+    const {
+      category,
+      description,
+      price,
+      revisions,
+      time,
+      title,
+      shortDesc,
+    } = data;
+    if (
+      category &&
+      description &&
+      title &&
+      features.length &&
+      files.length &&
+      price > 0 &&
+      shortDesc.length &&
+      revisions > 0 &&
+      time > 0
+    ) {
+      const formData = new FormData()
+      files.forEach((file) => formData.append("images", file))
+      const gigData = {
+        title, description, category, price, revisions, features, time, shortDesc
+      }
+      const response = await axios.post(ADD_GIG_ROUTE, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data" 
+        },
+        params: gigData,
+      });
+      if(response.status === 201){
+        router.push("/seller/gigs")
+      }
+    }
   };
 
   return (
@@ -78,7 +115,6 @@ const create = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4"
               name="category"
               onChange={handleChange}
-              defaultValue="Choose a Category"
               value={data.category}
             >
               {categories.map(({ name }) => (

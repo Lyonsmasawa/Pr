@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/AuthRoutes.js";
 import cookieParser from "cookie-parser";
+import { gigsRoutes } from "./routes/GigsRoutes.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/gigs", gigsRoutes);
 
 app.listen(port, () => {
   console.log(`server is running at http://localhost:${port}`);
