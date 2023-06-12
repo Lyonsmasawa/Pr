@@ -2,6 +2,7 @@ import { categories } from "@/utils/categories";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
+import ImageUpload from "../../../components/ImageUpload";
 
 const create = () => {
   const [cookies] = useCookies();
@@ -38,6 +39,10 @@ const create = () => {
     const clonedFeatures = [...features];
     clonedFeatures.splice(index, 1);
     setFeatures(clonedFeatures);
+  };
+
+  const addGig = () => {
+
   };
 
   return (
@@ -167,6 +172,53 @@ const create = () => {
               })}
             </ul>
           </div>
+          <div className="">
+            <label htmlFor="image" className={labelClassName}>
+              Gig Images
+            </label>
+            <div className="">
+              <ImageUpload files={files} setFile={setFile} />
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-11">
+          <div>
+            <label htmlFor="shortDesc" className={labelClassName}>
+              Short Description
+            </label>
+            <input
+              type="text"
+              className={`${inputClassName} `}
+              id="shortDesc"
+              placeholder="Enter a short description."
+              name="shortDesc"
+              value={data.shortDesc}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="price" className={labelClassName}>
+              Gig Price ( Ksh )
+            </label>
+            <input
+              type="number"
+              className={`${inputClassName}`}
+              id="price"
+              placeholder="Enter a price"
+              name="price"
+              value={data.price}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div>
+          <button
+            className="border   text-lg font-semibold px-5 py-3   border-[#1DBF73] bg-[#1DBF73] text-white rounded-md"
+            type="button"
+            onClick={addGig}
+          >
+            Create
+          </button>
         </div>
       </form>
     </div>
