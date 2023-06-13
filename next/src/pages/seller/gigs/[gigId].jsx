@@ -1,5 +1,5 @@
 import { categories } from "@/utils/categories";
-import { ADD_GIG_ROUTE, GET_GIG_DATA, HOST } from "@/utils/constants";
+import { ADD_GIG_ROUTE, EDIT_GIG_ROUTE, GET_GIG_DATA, HOST } from "@/utils/constants";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -78,14 +78,14 @@ const edit = () => {
         time,
         shortDesc,
       };
-      const response = await axios.post(ADD_GIG_ROUTE, formData, {
+      const response = await axios.put(`${EDIT_GIG_ROUTE}/${gigId}`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
         },
         params: gigData,
       });
-      if (response.status === 201) {
+      if (response.status === 200) {
         router.push("/seller/gigs");
       }
     }
