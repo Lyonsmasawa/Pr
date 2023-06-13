@@ -52,3 +52,35 @@ export const addGig = async (req, res, next) => {
     return res.status(500).send("Internal Server Error");
   }
 };
+
+export const getUserAuthGig = async (req, res, next) => {
+  try {
+    const prisma = new PrismaClient();
+
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+      include: { gigs: true },
+    });
+
+    return res.status(200).json({ gigs: user?.gigs });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+};
+
+export const getGigData = async (req, res, next) => {
+  try {
+    if (req.params.gigId) {
+      const prisma = new PrismaClient();
+      const gig = await prisma.gigs.findUnique({
+        where: { id: parseInt(req.params.gigId) },
+      });
+      return res.status(200).json({ gig });
+    }
+    return res.status(400).send("Gig id is required");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+};
