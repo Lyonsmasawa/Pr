@@ -145,3 +145,41 @@ export const editGig = async (req, res, next) => {
     return res.status(500).send("Internal Server Error");
   }
 };
+
+export const searchGigs = async (req, res, next) => {
+  try {
+    if (req.query.searchTerm || req.query.category) {
+      const prisma = new PrismaClient();
+      const gigs = await prisma.gigs.findMany(
+        createSearchQuery(req.query.searchTerm, req.query.category)
+      );
+      return res.status(200).json({ gigs });
+    }
+    return res.status(400).send("searchTerm or category is required");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+};
+
+const createSearchQuery = (searchTerm, category) => {
+  const query = {
+    where: {
+      OR:[]
+    },
+    include: {
+      createdBy: true,
+    }
+  }
+  if (searchTerm) {
+    query.where.OR.push({
+      title: {contains: searchTerm, mode: "insensitive"}
+    })
+  }
+  if (category) {
+    query.where.OR.push({
+      title: {contains: category, mode: "insensitive"}
+    })
+  }
+  return query
+}

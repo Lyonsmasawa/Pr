@@ -79,9 +79,9 @@ const edit = () => {
         shortDesc,
       };
       const response = await axios.put(`${EDIT_GIG_ROUTE}/${gigId}`, formData, {
-        withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${cookies.jwt}`,
         },
         params: gigData,
       });

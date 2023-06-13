@@ -91,7 +91,15 @@ const Navbar = () => {
         try {
           const {
             data: { user },
-          } = await axios.post(GET_USER_INFO, {}, { withCredentials: true });
+          } = await axios.post(
+            GET_USER_INFO,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${cookies.jwt}`,
+              },
+            }
+          );
           let projectedUserInfo = { ...user };
           console.log(projectedUserInfo);
           if (user.profileImage) {
@@ -107,7 +115,7 @@ const Navbar = () => {
           });
           setIsLoaded(true);
           if (user.isProfileInfoSet === false) {
-            router.push('/profile')
+            router.push("/profile");
           }
         } catch (error) {
           console.log(error);
@@ -207,7 +215,7 @@ const Navbar = () => {
                 className="cursor-pointer font-medium"
                 onClick={handleModeSwitch}
               >
-               Switch To {isSeller ? "Buyer" : "Seller"}
+                Switch To {isSeller ? "Buyer" : "Seller"}
               </li>
               <li
                 className="cursor-pointer"

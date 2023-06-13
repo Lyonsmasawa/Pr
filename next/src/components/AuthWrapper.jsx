@@ -25,7 +25,8 @@ const AuthWrapper = ({ type }) => {
           password
         }
         const { data: {user, jwt} } = await axios.post(type === 'signup' ? SIGNUP_ROUTE : LOGIN_ROUTE, dataLoad, {withCredentials: true})
-        setCookies("jwt", {jwt})
+        setCookies("jwt", jwt)
+        // setCookies("jwt", {jwt})
         dispatch({type: reducerCases.CLOSE_AUTH_MODAL})
        if (user) {
          dispatch({type: reducerCases.SET_USER, userInfo: user})
