@@ -74,7 +74,7 @@ export const getGigData = async (req, res, next) => {
     if (req.params.gigId) {
       const prisma = new PrismaClient();
       const gig = await prisma.gigs.findUnique({
-        where: { id: parseInt(req.params.gigId) },
+        where: { id: parseInt(req.params.gigId)}, include: {createdBy: true}
       });
       return res.status(200).json({ gig });
     }
