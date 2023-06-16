@@ -3,6 +3,9 @@ export const API_URL = `${HOST}/api`
 
 export const AUTH_ROUTES = `${API_URL}/auth`
 export const GIG_ROUTES = `${API_URL}/gigs`
+export const ORDERS_ROUTES = `${API_URL}/orders`;
+export const MESSAGES_ROUTES = `${API_URL}/messages`;
+export const DASHBOARD_DATA_ROUTES = `${API_URL}/dashboard`;
 
 export const SIGNUP_ROUTE = `${AUTH_ROUTES}/signup`
 export const LOGIN_ROUTE = `${AUTH_ROUTES}/login`
@@ -15,3 +18,5 @@ export const GET_USER_GIGS_ROUTE = `${GIG_ROUTES}/get-user-gigs`
 export const GET_GIG_DATA = `${GIG_ROUTES}/get-gig-data`
 export const EDIT_GIG_ROUTE = `${GIG_ROUTES}/edit-gig`
 export const SEARCH_GIGS_ROUTE = `${GIG_ROUTES}/search-gigs`
+
+export const CREATE_ORDER = `${ORDERS_ROUTES}/create`;

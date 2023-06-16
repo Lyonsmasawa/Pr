@@ -79,7 +79,7 @@ const Profile = () => {
           const {
             data: { img },
           } = await axios.post(SET_USER_IMAGE, formData, {
-            header: {
+            headers: {
               "Content-type": "multipart/form-data",
               Authorization: `Bearer ${cookies.jwt}`,
             },
