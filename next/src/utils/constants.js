@@ -20,3 +20,4 @@ export const EDIT_GIG_ROUTE = `${GIG_ROUTES}/edit-gig`
 export const SEARCH_GIGS_ROUTE = `${GIG_ROUTES}/search-gigs`
 
 export const CREATE_ORDER = `${ORDERS_ROUTES}/create`;
+export const ORDER_SUCCESS_ROUTE = `${ORDERS_ROUTES}/success`;
