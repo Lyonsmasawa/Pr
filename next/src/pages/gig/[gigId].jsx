@@ -9,8 +9,10 @@ import {
 } from "../../utils/constants";
 import { useStateProvider } from "../../context/StateContext";
 import { reducerCases } from "../../context/constants";
+import { useCookies } from "react-cookie";
 
 function Gig() {
+  const [cookies] = useCookies()
   const router = useRouter();
   const { gigId } = router.query;
   const [{ gigData, userInfo }, dispatch] = useStateProvider();
@@ -31,22 +33,24 @@ function Gig() {
     if (gigId) fetchGigData();
   }, [gigId, dispatch]);
 
-//   useEffect(() => {
-//     const checkGigOrdered = async () => {
-//       const {
-//         data: { hasUserOrderedGig },
-//       } = await axios.get(`${CHECK_USER_ORDERED_GIG_ROUTE}/${gigId}`, {
-//         withCredentials: true,
-//       });
-//       dispatch({
-//         type: reducerCases.HAS_USER_ORDERED_GIG,
-//         hasOrdered: hasUserOrderedGig,
-//       });
-//     };
-//     if (userInfo) {
-//       checkGigOrdered();
-//     }
-//   }, [dispatch, gigId, userInfo]);
+  useEffect(() => {
+    const checkGigOrdered = async () => {
+      const {
+        data: { hasUserOrderedGig },
+      } = await axios.get(`${CHECK_USER_ORDERED_GIG_ROUTE}/${gigId}`, {
+        headers: {
+          Authorization: `Bearer ${cookies.jwt}`,
+        },
+      });
+      dispatch({
+        type: reducerCases.HAS_USER_ORDERED_GIG,
+        hasOrdered: hasUserOrderedGig,
+      });
+    };
+    if (userInfo) {
+      checkGigOrdered();
+    }
+  }, [dispatch, gigId, userInfo]);
 
   return (
     <div className="grid grid-cols-3 mx-32 gap-20">

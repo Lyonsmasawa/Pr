@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-// import AddReview from "../../components/Gigs/AddReview";
-// import Reviews from "../../components/Gigs/Reviews";
 import { FaStar } from "react-icons/fa";
 import { useStateProvider } from "../../context/StateContext";
 import { HOST } from "../../utils/constants";
+import Reviews from "./Reviews";
+import AddReviews from "./AddReviews";
 
 function Details() {
   const [{ gigData, hasOrdered }] = useStateProvider();
@@ -17,13 +17,13 @@ function Details() {
   }, [gigData]);
 
   const [averageRatings, setAverageRatings] = useState("0");
-//   useEffect(() => {
-//     if (gigData && gigData?.reviews?.length) {
-//       let avgRating = 0;
-//       gigData.reviews.forEach(({ rating }) => (avgRating += rating));
-//       setAverageRatings((avgRating / gigData.reviews.length).toFixed(1));
-//     }
-//   }, [gigData]);
+  useEffect(() => {
+    if (gigData && gigData?.reviews?.length) {
+      let avgRating = 0;
+      gigData.reviews.forEach(({ rating }) => (avgRating += rating));
+      setAverageRatings((avgRating / gigData.reviews.length).toFixed(1));
+    }
+  }, [gigData]);
 
   return (
     <>
@@ -149,7 +149,7 @@ function Details() {
                       <FaStar
                         key={star}
                         className={`cursor-pointer ${
-                          Math.ceil(gigData.averageRating || 0) >= star
+                          Math.ceil(gigData.averageRating) >= star
                             ? "text-yellow-400"
                             : "text-gray-300"
                         }`}
@@ -157,17 +157,17 @@ function Details() {
                     ))}
                   </div>
                   <span className="text-yellow-500">
-                    {gigData.averageRating || 0}
+                    {gigData.averageRating}
                   </span>
                   <span className="text-[#74767e]">
-                    ({gigData.totalReviews || 0})
+                    ({gigData.totalReviews})
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          {/* <Reviews />
-          {hasOrdered && <AddReview />} */}
+          <Reviews />
+          {hasOrdered && <AddReviews />}
         </div>
       )}
     </>

@@ -46,6 +46,22 @@ const reducer = (state, action) => {
         ...state,
         hasOrdered: action.hasOrdered,
       };
+
+    case reducerCases.HAS_USER_ORDERED_GIG:
+      return {
+        ...state,
+        hasOrdered: action.hasOrdered,
+      };
+      
+    case reducerCases.ADD_REVIEW:
+      return {
+        ...state,
+        gigData: {
+          ...state.gigData,
+          reviews: [...state.gigData.reviews, action.newReview],
+        },
+      };
+
     default:
       return state;
   }
