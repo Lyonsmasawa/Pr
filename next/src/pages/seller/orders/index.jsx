@@ -1,5 +1,5 @@
-import { useStateProvider } from "@/context/StateContext";
-import { GET_BUYER_ORDERS_ROUTE } from "@/utils/constants";
+import { useStateProvider } from "../../../context/StateContext";
+import { GET_SELLER_ORDERS_ROUTE } from "../../../utils/constants";
 import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ function Orders() {
       try {
         const {
           data: { orders },
-        } = await axios.get(GET_BUYER_ORDERS_ROUTE, {
+        } = await axios.get(GET_SELLER_ORDERS_ROUTE, { 
           headers: {
             Authorization: `Bearer ${cookies.jwt}`,
           },
@@ -49,6 +49,9 @@ function Orders() {
                 Delivery Time
               </th>
               <th scope="col" className="px-6 py-3">
+                Ordered By
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Order Date
               </th>
               <th scope="col" className="px-6 py-3">
@@ -57,7 +60,7 @@ function Orders() {
             </tr>
           </thead>
           <tbody>
-            {orders?.map((order) => {
+            {orders.map((order) => {
               return (
                 <tr
                   className="bg-white dark:bg-gray-800 hover:bg-gray-50"
@@ -72,11 +75,14 @@ function Orders() {
                   <td className="px-6 py-4">{order.gig.category}</td>
                   <td className="px-6 py-4">{order.price}</td>
                   <td className="px-6 py-4">{order.gig.deliveryTime}</td>
+                  <td className="px-6 py-4">
+                    {order.buyer.fullName} ({order.buyer.username})
+                  </td>
                   <td className="px-6 py-4">{order.createdAt.split("T")[0]}</td>
 
                   <td className="px-6 py-4 ">
                     <Link
-                      href={`/buyer/orders/messages/${order.id}`}
+                      href={`/seller/orders/messages/${order.id}`}
                       className="font-medium text-blue-600  hover:underline"
                     >
                       Send

@@ -22,3 +22,4 @@ export const SEARCH_GIGS_ROUTE = `${GIG_ROUTES}/search-gigs`
 export const CREATE_ORDER = `${ORDERS_ROUTES}/create`;
 export const ORDER_SUCCESS_ROUTE = `${ORDERS_ROUTES}/success`;
 export const GET_BUYER_ORDERS_ROUTE = `${ORDERS_ROUTES}/get-buyer-orders`;
+export const GET_SELLER_ORDERS_ROUTE = `${ORDERS_ROUTES}/get-seller-orders`;
