@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import React, { useEffect } from "react";
 import { ORDER_SUCCESS_ROUTE } from "@/utils/constants";
+import axios from 'axios'
 
 const success = () => {
   const router = useRouter();
@@ -14,7 +15,11 @@ const success = () => {
         await axios.put(
           ORDER_SUCCESS_ROUTE,
           { paymentIntent: payment_intent },
-          { withCredentials: true }
+          { 
+            headers: {
+              Authorization: `Bearer ${cookies.jwt}`,
+            },
+          }
         );
       } catch (err) {
         console.error(err);
@@ -23,6 +28,7 @@ const success = () => {
     };
     if (payment_intent) {
       changeOrderStatus();
+      // console.log(payment_intent)
       setTimeout(() => router.push("/buyer/orders"), 5000);
     } else {
       router.push("/");
